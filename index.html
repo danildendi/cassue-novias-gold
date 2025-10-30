@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>D’ Cassue Novias — Wedding Planner</title>
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========== RESET =========== */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: 'Poppins', sans-serif;
+      background:#080606;
+      color:#f7f3ef;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+    a{color:inherit;text-decoration:none}
+
+    /* =========== VARS (palette) =========== */
+    :root{
+      --accent:#b78a67;         /* dorado/arena */
+      --accent-dark:#8f6247;
+      --muted:#cfc6bf;
+      --bg:#0b0a09;
+      --card:#141210;
+      --glass: rgba(255,255,255,0.04);
+    }
+
+    /* =========== HEADER =========== */
+    header{
+      position:fixed;top:18px;left:24px;right:24px;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:20px;padding:12px 18px;border-radius:12px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.25));
+      z-index:1200;backdrop-filter: blur(6px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    }
+    .brand{
+      display:flex;align-items:center;gap:14px;
+    }
+    .logo{
+      font-family:'Playfair Display', serif;
+      font-size:1.4rem;color:var(--accent);letter-spacing:1px;font-weight:700;
+    }
+    nav ul{display:flex;gap:18px;list-style:none;align-items:center}
+    nav a{font-weight:500;color:var(--muted);padding:6px 10px;border-radius:8px;transition:all .25s}
+    nav a:hover{color:#fff;background:var(--glass)}
+    .cta{
+      padding:8px 18px;border-radius:999px;background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+      color:#fff;font-weight:600;box-shadow:0 6px 18px rgba(139,90,64,0.18);
+    }
+    .hamburger{display:none}
+
+    /* =========== HERO =========== */
+    .hero{
+      height:100vh;position:relative;display:flex;align-items:center;justify-content:center;
+      background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=2000&q=80');
+      background-size:cover;background-position:center;
+    }
+    .hero::after{
+      content:"";position:absolute;inset:0;
+      background: linear-gradient(180deg, rgba(8,6,5,0.55), rgba(8,6,5,0.75));
+    }
+    .hero-inner{position:relative;z-index:2;text-align:center;padding:24px;max-width:980px}
+    .hero h1{
+      font-family:'Playfair Display',serif;font-size:3.2rem;color:#f2e9e1;letter-spacing:3px;
+      margin-bottom:14px;text-transform:uppercase;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+    .hero p{color:var(--muted);font-size:1.05rem;margin-bottom:22px}
+    .hero small{display:block;color:var(--muted);margin-top:8px}
+    .hero .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .btn{
+      border:none;cursor:pointer;padding:12px 22px;border-radius:999px;font-weight:600;
+      background:transparent;color:#fff;backdrop-filter: blur(2px);
+      transition:transform .15s, box-shadow .15s;
+    }
+    .btn-primary{
+      background: linear-gradient(180deg,var(--accent),var(--accent-dark));
+      box-shadow: 0 10px 30px rgba(139,90,64,0.18);
+    }
+    .btn:hover{transform:translateY(-3px)}
+
+    /* =========== LAYOUT SECTIONS =========== */
+    main{margin-top:100vh; /* ensures header overlaps hero nicely */}
+
+    section{padding:84px 6vw;max-width:1200px;margin:0 auto}
+    h2{font-family:'Playfair Display',serif;color:var(--accent);font-size:1.8rem;margin-bottom:10px}
+    .lead{color:var(--muted);margin-bottom:28px;max-width:900px}
+
+    /* =========== Vestidos (galería) =========== */
+    .grid{display:grid;grid-template-columns: repeat(3, 1fr);gap:20px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;overflow:hidden;position:relative;height:360px;box-shadow: 0 8px 24px rgba(0,0,0,0.6)}
+    .card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+    .card:hover img{transform:scale(1.07)}
+    .card .meta{position:absolute;left:12px;bottom:12px;background:linear-gradient(90deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35));padding:10px 14px;border-radius:10px;color:#fff;font-weight:600}
+    .card .desc{position:absolute;left:12px;top:12px;background:rgba(0,0,0,0.35);padding:8px 10px;border-radius:8px;color:var(--muted);font-size:0.95rem;max-width:72%}
+
+    /* =========== Precios =========== */
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+    .plan{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));border-radius:14px;padding:28px;border:1px solid rgba(255,255,255,0.03);text-align:center}
+    .plan h3{font-family:'Playfair Display',serif;margin-bottom:6px;color:#fff}
+    .price{font-size:1.6rem;font-weight:700;color:var(--accent);margin:8px 0 14px}
+    .plan ul{list-style:none;color:var(--muted);margin-bottom:16px}
+    .plan .choose{padding:10px 18px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff}
+    .plan p{color:var(--muted);font-size:0.95rem}
+
+    /* =========== Catalogo =========== */
+    .catalog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .catalog-grid img{width:100%;height:220px;object-fit:cover;border-radius:10px;cursor:pointer;transition:transform .25s}
+    .catalog-grid img:hover{transform:scale(1.03)}
+
+    /* =========== Experiencias (testimonios) =========== */
+    .testimonials{display:flex;gap:18px;flex-wrap:wrap}
+    .test{background:var(--card);padding:20px;border-radius:12px;flex:1 1 320px;border:1px solid rgba(255,255,255,0.02)}
+    .test p{color:var(--muted);margin-bottom:12px}
+    .test .author{font-weight:600;color:#fff}
+
+    /* =========== Nosotros =========== */
+    .about{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+    .about .text{flex:1 1 360px}
+    .about .photo{flex: 0 0 360px;border-radius:12px;overflow:hidden;height:260px}
+    .about img{width:100%;height:100%;object-fit:cover}
+    .values{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .value{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;color:var(--muted);flex:1 1 180px}
+
+    /* =========== Services */
+    .services{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .service{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .service h4{font-family:'Playfair Display',serif;margin-bottom:6px}
+    .service p{color:var(--muted)}
+
+    /* =========== Contact */
+    .contact-grid{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start}
+    .form{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .form .field{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+    .form input,.form textarea{padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff}
+    .form .note{color:var(--muted);font-size:0.9rem}
+    .socials{display:flex;gap:8px;margin-top:10px}
+    .socials a{padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.02);color:var(--muted);font-weight:600}
+
+    /* =========== FAQ */
+    .faq{display:grid;gap:12px}
+    .faq-item{background:rgba(255,255,255,0.02);padding:14px;border-radius:10px}
+    .faq-item summary{font-weight:600;cursor:pointer}
+    .faq-item p{color:var(--muted);margin-top:8px}
+
+    /* =========== Footer =========== */
+    footer{padding:28px 6vw;background:linear-gradient(180deg,#060504,#0b0a09);text-align:center;color:#a9a09a}
+
+    /* =========== Lightbox (modal imagen) =========== */
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background: rgba(8,6,5,0.8);z-index:1400;padding:28px}
+    .lightbox.active{display:flex}
+    .lightbox img{max-width:92%;max-height:86%;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,0.7)}
+    .lightbox .caption{color:var(--muted);text-align:center;margin-top:14px}
+
+    /* =========== Login modal =========== */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background: rgba(0,0,0,0.6);z-index:1500;padding:22px}
+    .modal.active{display:flex}
+    .login-box{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:26px;width:420px;max-width:96%;box-shadow: 0 20px 60px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .login-box h3{font-family:'Playfair Display',serif;margin-bottom:6px;color:var(--accent)}
+    .field{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+    .field input{padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff}
+    .login-actions{display:flex;gap:10px;justify-content:space-between;align-items:center}
+    .error{color:#ffb4b4;font-size:.95rem}
+
+    /* =========== Admin panel (demo) =========== */
+    .admin{margin-top:18px;padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(183,138,103,0.06), rgba(0,0,0,0.08));border:1px solid rgba(255,255,255,0.02)}
+
+    /* =========== Responsive =========== */
+    @media (max-width:1000px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .catalog-grid{grid-template-columns:repeat(2,1fr)}
+      .pricing{grid-template-columns:repeat(2,1fr)}
+      .contact-grid{grid-template-columns:1fr}
+      header{padding:10px 12px}
+    }
+    @media (max-width:640px){
+      .grid{grid-template-columns:1fr}
+      .catalog-grid{grid-template-columns:1fr}
+      .pricing{grid-template-columns:1fr}
+      header{left:12px;right:12px}
+      .hero h1{font-size:2.2rem}
+      nav{display:none}
+      .hamburger{display:block}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="logo">D’ Cassue</div>
+      <div style="color:var(--muted);font-size:0.92rem">Novias · Diseño & Wedding Planner</div>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#vestidos">Vestidos</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#experiencias">Experiencias</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <div style="display:flex;gap:12px;align-items:center">
+      <button class="btn" id="open-login">Iniciar sesión</button>
+      <a href="#agendar" class="cta">Agendar cita</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio" aria-label="Inicio">
+    <div class="hero-inner">
+      <h1>Vive tu momento de ensueño</h1>
+      <p>Vestidos exclusivos, planificación integral y experiencias únicas para novias que buscan elegancia y detalle.</p>
+      <small>Diseños a medida • Alta costura • Asesoría integral</small>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="document.querySelector('#vestidos').scrollIntoView({behavior:'smooth'})">Ver Vestidos</button>
+        <button class="btn" onclick="document.querySelector('#catalogo').scrollIntoView({behavior:'smooth'})">Ver Catálogo</button>
+        <button class="btn" onclick="document.querySelector('#contacto').scrollIntoView({behavior:'smooth'})">Contáctanos</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- VESTIDOS -->
+    <section id="vestidos" aria-labelledby="vestidos-title">
+      <h2 id="vestidos-title">Vestidos</h2>
+      <p class="lead">Nuestra selección más destacada: cortes, encajes y bordados confeccionados para cada silueta. Da clic en una imagen para ampliar.</p>
+
+      <div class="grid" role="list">
+        <!-- 6 vestidos ampliados -->
+        <div class="card" role="listitem">
+          <img src="https://images.unsplash.com/photo-1520975921125-dfbf1835f212?auto=format&fit=crop&w=1200&q=80" alt="Vestido Elegance" loading="lazy" data-caption="Vestido Elegance – Corte sirena. Tela: mikado y tul. Bordado fino en cintura.">
+          <div class="meta">Vestido Elegance</div>
+          <div class="desc">Corte sirena • Mikado & tul • Perfecto para bodas formales</div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1200&q=80" alt="Vestido Romance" loading="lazy" data-caption="Vestido Romance – Tul & encaje. Silueta A-line con detalle en espalda abierta.">
+          <div class="meta">Vestido Romance</div>
+          <div class="desc">Silueta A-line • Encaje francés • Ideal para ceremonias al atardecer</div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1542060746-4ac43bdc6ec9?auto=format&fit=crop&w=1200&q=80" alt="Vestido Dream" loading="lazy" data-caption="Vestido Dream – Clásico atemporal con falda amplia y cola elegante.">
+          <div class="meta">Vestido Dream</div>
+          <div class="desc">Clásico • Falda amplia • Para novias que sueñan con una entrada memorable</div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1522120698819-6c8f6b5f6d5a?auto=format&fit=crop&w=1200&q=80" alt="Vestido Boho" loading="lazy" data-caption="Vestido Boho – Encaje bohemio, mangas largas y caída ligera.">
+          <div class="meta">Vestido Boho</div>
+          <div class="desc">Bohemio • Encaje ligero • Perfecto para bodas al aire libre</div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80" alt="Vestido Minimal" loading="lazy" data-caption="Vestido Minimal – Corte limpio y telas premium para una elegancia moderna.">
+          <div class="meta">Vestido Minimal</div>
+          <div class="desc">Minimalista • Seda & crepé • Para novias contemporáneas</div>
+        </div>
+
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1542077953-73f9db240b0b?auto=format&fit=crop&w=1200&q=80" alt="Vestido Couture" loading="lazy" data-caption="Vestido Couture – Alta costura, bordados a mano y forro interior de lujo.">
+          <div class="meta">Vestido Couture</div>
+          <div class="desc">Alta costura • Bordados a mano • Atención por cita exclusiva</div>
+        </div>
+      </div>
+
+      <p style="margin-top:16px;color:var(--muted)">Si deseas pruebas privadas, personalizaciones o combinaciones de telas, agenda una consulta para diseñar tu vestido desde cero.</p>
+    </section>
+
+    <!-- PRECIOS -->
+    <section id="precios" aria-labelledby="precios-title">
+      <h2 id="precios-title">Precios</h2>
+      <p class="lead">Planes pensados según el nivel de personalización y servicios incluidos. Precios referenciales.</p>
+
+      <div class="pricing" role="list">
+        <div class="plan">
+          <h3>Básico</h3>
+          <div class="price">S/ 1,200</div>
+          <ul>
+            <li>Diseño estándar</li>
+            <li>Pruebas limitadas</li>
+            <li>Acabado básico</li>
+          </ul>
+          <p>Ideal si buscas una opción elegante y rápida. Incluye asesoría inicial y ajustes básicos.</p>
+          <button class="choose">Seleccionar</button>
+        </div>
+
+        <div class="plan" style="border:2px solid rgba(183,138,103,0.15);box-shadow:0 12px 30px rgba(183,138,103,0.05);">
+          <h3>Premium</h3>
+          <div class="price">S/ 2,800</div>
+          <ul>
+            <li>Diseño a medida</li>
+            <li>Telas premium</li>
+            <li>3 pruebas incluidas</li>
+            <li>Asesoría de imagen</li>
+          </ul>
+          <p>La mejor relación calidad-personalización: materiales superiores y seguimiento detallado por nuestra estilista.</p>
+          <button class="choose">Seleccionar</button>
+        </div>
+
+        <div class="plan">
+          <h3>Exclusivo</h3>
+          <div class="price">S/ 5,500</div>
+          <ul>
+            <li>Alta costura</li>
+            <li>Bordados a mano</li>
+            <li>Atención VIP</li>
+            <li>Servicio de alteraciones</li>
+          </ul>
+          <p>Para novias que desean una pieza única con atención prioritara, pruebas en taller y servicios adicionales (peinado, prueba de maquillaje).</p>
+          <button class="choose">Seleccionar</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CATALOGO -->
+    <section id="catalogo" aria-labelledby="catalogo-title">
+      <h2 id="catalogo-title">Catálogo</h2>
+      <p class="lead">Explora más modelos del catálogo. Clic para ampliar y ver detalles.</p>
+
+      <div class="catalog-grid" id="catalog-grid">
+        <img src="https://images.unsplash.com/photo-1505691723518-36a9a8d6f5b7?auto=format&fit=crop&w=1200&q=80" alt="Catálogo 1" data-caption="Catálogo — Diseño A">
+        <img src="https://images.unsplash.com/photo-1520975686069-3f1b677fd5d8?auto=format&fit=crop&w=1200&q=80" alt="Catálogo 2" data-caption="Catálogo — Diseño B">
+        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80" alt="Catálogo 3" data-caption="Catálogo — Diseño C">
+        <img src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?auto=format&fit=crop&w=1200&q=80" alt="Catálogo 4" data-caption="Catálogo — Diseño D">
+        <img src="https://images.unsplash.com/photo-1582901964499-3a0b3f3b2f2d?auto=format&fit=crop&w=1200&q=80" alt="Catálogo 5" data-caption="Catálogo — Diseño E">
+        <img src="https://images.unsplash.com/photo-1520975686069-3f1b677fd5d8?auto=format&fit=crop&w=1200&q=80" alt="Catálogo 6" data-caption="Catálogo — Diseño F">
+        <img src="https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=1200&q=80" alt="Catálogo 7" data-caption="Catálogo — Diseño G">
+        <img src="https://images.unsplash.com/photo-1520975921125-dfbf1835f212?auto=format&fit=crop&w=1200&q=80" alt="Catálogo 8" data-caption="Catálogo — Diseño H">
+      </div>
+
+    </section>
+
+    <!-- SERVICIOS -->
+    <section id="servicios" aria-labelledby="servicios-title">
+      <h2 id="servicios-title">Servicios adicionales</h2>
+      <p class="lead">Más que vestidos: ofrecemos un servicio integral para que tu boda sea coherente y memorable.</p>
+
+      <div class="services">
+        <div class="service">
+          <h4>Wedding Planner</h4>
+          <p>Coordinamos proveedores, cronograma y logística para que disfrutes cada momento sin preocupaciones. Paquetes parciales o completos.</p>
+        </div>
+
+        <div class="service">
+          <h4>Asesoría de imagen</h4>
+          <p>Sesiones con nuestra estilista: prueba de peinado, maquillaje y selección de accesorios para realzar tu look nupcial.</p>
+        </div>
+
+        <div class="service">
+          <h4>Personalización & Bordado</h4>
+          <p>Detalles hechos a mano: encajes, forros personalizados y bordados con significado (iniciales, fechas).</p>
+        </div>
+
+        <div class="service">
+          <h4>Alquiler & Venta</h4>
+          <p>Tanto si prefieres comprar como alquilar para un evento, manejamos opciones con mantenimiento y entrega a medida.</p>
+        </div>
+
+        <div class="service">
+          <h4>Accesorios</h4>
+          <p>Velos, tocados, cinturones y joyería fina para completar tu conjunto.</p>
+        </div>
+
+        <div class="service">
+          <h4>Consultoría de color y telas</h4>
+          <p>Asesoría técnica sobre telas, peso y caída para que el vestido se comporte perfecto en tu tipo de ceremonia.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCIAS -->
+    <section id="experiencias" aria-labelledby="experiencias-title">
+      <h2 id="experiencias-title">Experiencias</h2>
+      <p class="lead">Historias reales de novias que confiaron en nosotros.</p>
+
+      <div class="testimonials">
+        <div class="test">
+          <p>"El vestido superó mis expectativas. Cada detalle estuvo perfecto y el equipo me acompañó en todo momento."</p>
+          <div class="author">— Mariana, Arequipa</div>
+        </div>
+
+        <div class="test">
+          <p>"Servicio impecable y muy personalizado. Me sentí segura y hermosa el día de mi boda."</p>
+          <div class="author">— Lucía, Lima</div>
+        </div>
+
+        <div class="test">
+          <p>"Recomendadas 100%. El proceso fue profesional y con mucha sensibilidad a mis ideas."</p>
+          <div class="author">— Camila, Cusco</div>
+        </div>
+
+        <div class="test">
+          <p>"La asesora de imagen entendió exactamente lo que quería. El peinado y el velo complementaron el vestido a la perfección."</p>
+          <div class="author">— Sofía, Arequipa</div>
+        </div>
+
+        <div class="test">
+          <p>"Contraté planner parcial y fue la mejor decisión: proveedores coordinados, tiempos respetados y una novia feliz."</p>
+          <div class="author">— Verónica, Trujillo</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- NOSOTROS -->
+    <section id="nosotros" aria-labelledby="nosotros-title">
+      <h2 id="nosotros-title">Nosotros</h2>
+      <div class="about">
+        <div class="text">
+          <p class="lead">D’ Cassue Novias nace de la pasión por la moda nupcial y la atención al detalle. Combinamos tradición artesana con propuestas contemporáneas para crear vestidos que cuentan historias.</p>
+          <p style="color:var(--muted)"><strong>Nuestra Historia:</strong> Fundada en Arequipa por diseñadoras con experiencia en alta costura, D’ Cassue surge para ofrecer una alternativa elegante y cercana. Empezamos en un taller pequeño y hoy trabajamos con proveedores nacionales e internacionales para ofrecer telas y acabados superiores.</p>
+
+          <div class="values">
+            <div class="value"><strong>Artesanía</strong><div style="color:var(--muted);margin-top:6px">Detalles hechos a mano por nuestro equipo.</div></div>
+            <div class="value"><strong>Empatía</strong><div style="color:var(--muted);margin-top:6px">Escuchamos y trasladamos tus ideas al diseño.</div></div>
+            <div class="value"><strong>Responsabilidad</strong><div style="color:var(--muted);margin-top:6px">Cumplimos tiempos y acuerdos con transparencia.</div></div>
+          </div>
+
+        </div>
+
+        <div class="photo">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1000&q=80" alt="Nuestro taller">
+        </div>
+      </div>
+
+      <div style="margin-top:18px">
+        <h3 style="font-family:'Playfair Display',serif;color:var(--accent);margin-bottom:6px">Equipo</h3>
+        <p style="color:var(--muted)">Conoce a las personas detrás de las puntadas: diseñadoras, patronistas y asesoras que acompañan cada proyecto.</p>
+        <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+          <div style="background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;min-width:180px">
+            <strong>María Álvarez</strong><div style="color:var(--muted);font-size:0.95rem">Diseñadora jefa • Fundadora</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;min-width:180px">
+            <strong>Carla Pinto</strong><div style="color:var(--muted);font-size:0.95rem">Patronista senior</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;min-width:180px">
+            <strong>Sonia Rey</strong><div style="color:var(--muted);font-size:0.95rem">Asesora de imagen</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AGENDAR (ancla para el botón) -->
+      <div id="agendar" style="margin-top:22px;padding:18px;background:var(--glass);border-radius:12px;color:var(--muted);">
+        <strong>¿Listas para tu cita?</strong> Escríbenos al <a href="tel:+51999999999" style="color:var(--accent)">+51 999 999 999</a> o envíanos un correo a <a href="mailto:info@dcassue.com" style="color:var(--accent)">info@dcassue.com</a>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" aria-labelledby="contacto-title">
+      <h2 id="contacto-title">Contacto</h2>
+      <p class="lead">Escríbenos para cotizar, agendar una prueba o simplemente para conversar sobre tu idea.</p>
+
+      <div class="contact-grid">
+        <div class="form">
+          <form id="contact-form" onsubmit="submitContact(event)">
+            <div class="field">
+              <label style="color:var(--muted)">Nombre</label>
+              <input type="text" id="c-name" placeholder="Tu nombre" required>
+            </div>
+            <div class="field">
+              <label style="color:var(--muted)">Correo</label>
+              <input type="email" id="c-email" placeholder="tu@correo.com" required>
+            </div>
+            <div class="field">
+              <label style="color:var(--muted)">Teléfono (opcional)</label>
+              <input type="tel" id="c-phone" placeholder="+51 9...">
+            </div>
+            <div class="field">
+              <label style="color:var(--muted)">Mensaje</label>
+              <textarea id="c-message" rows="5" placeholder="Cuéntanos tu idea, fecha y presupuesto aproximado" required></textarea>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;justify-content:space-between">
+              <div style="color:var(--muted);font-size:0.9rem">Te responderemos en menos de 48 horas hábiles.</div>
+              <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+            </div>
+            <div id="contact-result" style="margin-top:10px;color:var(--muted);display:none"></div>
+          </form>
+
+          <div style="margin-top:12px" class="note">
+            <div><strong>Horario:</strong> Lun-Vie 9:00–18:00 • Sáb 9:00–14:00</div>
+            <div style="margin-top:6px">También atendemos con cita previa fuera de horario.</div>
+          </div>
+
+          <div class="socials">
+            <a href="#">Instagram</a>
+            <a href="#">Facebook</a>
+            <a href="#">Pinterest</a>
+          </div>
+        </div>
+
+        <div style="background:var(--card);padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)">
+          <h4 style="font-family:'Playfair Display',serif;color:var(--accent);margin-bottom:8px">Visítanos</h4>
+          <p style="color:var(--muted);margin-bottom:8px">Taller & Showroom: Calle Falsa 123, Arequipa • Atención con cita</p>
+          <div style="border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.5)">
+            <img src="https://maps.googleapis.com/maps/api/staticmap?center=Arequipa,Peru&zoom=13&size=600x300&maptype=roadmap&markers=color:orange%7Clabel:D%7CArequipa,Peru" alt="Mapa (estático)" style="width:100%;display:block;">
+          </div>
+          <p style="color:var(--muted);font-size:0.95rem;margin-top:10px">O envíanos un WhatsApp al <a href="https://wa.me/519999999999" style="color:var(--accent)">+51 999 999 999</a></p>
+        </div>
+      </div>
+
+      <!-- FAQ breve -->
+      <div style="margin-top:18px">
+        <h3 style="font-family:'Playfair Display',serif;color:var(--accent);margin-bottom:6px">Preguntas frecuentes</h3>
+        <div class="faq">
+          <details class="faq-item"><summary>¿Cuánto tiempo toma hacer un vestido a medida?</summary><p>Depende de la complejidad, pero normalmente entre 6 a 12 semanas. Para alta costura se recomienda iniciar con 4 meses de anticipación.</p></details>
+          <details class="faq-item"><summary>¿Hacen envíos a otras ciudades?</summary><p>Sí. Enviamos a todo el Perú y ofrecemos servicio de ajuste final en el destino cuando es posible.</p></details>
+          <details class="faq-item"><summary>¿Puedo combinar telas o traer mi propio textil?</summary><p>Sí, podemos trabajar con telas que nos traigas (previa evaluación) o seleccionar telas premium a pedido.</p></details>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ADMIN PANEL DEMO (se muestra cuando inicias sesión) -->
+    <section aria-label="Panel administrativo">
+      <div id="admin-area" style="max-width:1200px;margin:0 auto;padding:30px 6vw;display:none">
+        <div class="admin">
+          <h3 style="margin-bottom:8px">Panel (Demo)</h3>
+          <p style="color:var(--muted)">Has iniciado sesión. Aquí podrías ver reservas, clientes y editar catálogo. (Demo local sin base de datos).</p>
+          <div style="margin-top:12px;">
+            <button class="choose" onclick="logout()">Cerrar sesión</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    © <span id="year"></span> D’ Cassue Novias · Arequipa • Todos los derechos reservados
+    <div style="margin-top:8px;color:var(--muted);font-size:0.9rem">Diseño & desarrollo • D’ Cassue Studio</div>
+  </footer>
+
+  <!-- LIGHTBOX (imagen ampliada) -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-hidden="true">
+    <div>
+      <img id="lightbox-img" alt="">
+      <div class="caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal" id="modal-login" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="login-box" role="document">
+      <h3>Iniciar sesión</h3>
+      <p style="color:var(--muted);margin-bottom:12px">Ingresa tus credenciales (demo)</p>
+
+      <div class="field">
+        <label style="color:var(--muted);font-size:0.92rem">Usuario</label>
+        <input id="username" type="text" placeholder="ej. cliente" autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label style="color:var(--muted);font-size:0.92rem">Contraseña</label>
+        <input id="password" type="password" placeholder="••••••" autocomplete="current-password">
+      </div>
+
+      <div class="error" id="login-error" style="display:none"></div>
+
+      <div class="login-actions" style="margin-top:12px">
+        <div style="display:flex;gap:8px">
+          <button class="btn" id="login-cancel">Cancelar</button>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" id="login-btn">Entrar</button>
+        </div>
+      </div>
+
+      <p style="color:var(--muted);font-size:0.9rem;margin-top:12px">Demo: usa <strong>usuario: client</strong> y <strong>clave: dcs123</strong></p>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    // ---------- YEAR ----------
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---------- LIGHTBOX ----------
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbCaption = document.getElementById('lightbox-caption');
+
+    function openLightbox(src, alt, caption){
+      lbImg.src = src;
+      lbImg.alt = alt || '';
+      lbCaption.textContent = caption || '';
+      lightbox.classList.add('active');
+      lightbox.setAttribute('aria-hidden','false');
+    }
+
+    function closeLightbox(){
+      lightbox.classList.remove('active');
+      lightbox.setAttribute('aria-hidden','true');
+      lbImg.src = '';
+      lbCaption.textContent = '';
+    }
+
+    // Attach click handlers to all images in gallery & catalog
+    document.querySelectorAll('.grid .card img, .catalog-grid img').forEach(img=>{
+      img.addEventListener('click', ()=> openLightbox(img.src, img.alt, img.dataset.caption || img.alt));
+    });
+
+    lightbox.addEventListener('click', (e)=>{
+      if(e.target === lightbox || e.target === lbImg) closeLightbox();
+    });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLightbox(); });
+
+    // ---------- LOGIN MODAL (demo client-side) ----------
+    const modal = document.getElementById('modal-login');
+    const openLoginBtn = document.getElementById('open-login');
+    const loginBtn = document.getElementById('login-btn');
+    const loginCancel = document.getElementById('login-cancel');
+    const loginError = document.getElementById('login-error');
+    const adminArea = document.getElementById('admin-area');
+
+    // Simple demo credentials:
+    const DEMO_USER = 'client';
+    const DEMO_PASS = 'dcs123';
+
+    openLoginBtn.addEventListener('click', ()=> {
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden','false');
+      document.getElementById('username').focus();
+    });
+
+    loginCancel.addEventListener('click', ()=> {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden','true');
+      loginError.style.display='none';
+    });
+
+    loginBtn.addEventListener('click', ()=> attemptLogin());
+
+    // allow enter key for login
+    document.getElementById('password').addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter') attemptLogin();
+    });
+
+    function attemptLogin(){
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+      if(!u || !p){
+        loginError.textContent = 'Por favor completa ambos campos.';
+        loginError.style.display = 'block';
+        return;
+      }
+      // DEMO: client-side check (not secure). In production reemplazar por autenticación en servidor.
+      if(u === DEMO_USER && p === DEMO_PASS){
+        loginError.style.display = 'none';
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden','true');
+        // Muestra admin area demo
+        adminArea.style.display = 'block';
+        adminArea.scrollIntoView({behavior:'smooth'});
+      } else {
+        loginError.textContent = 'Credenciales incorrectas (demo).';
+        loginError.style.display = 'block';
+      }
+    }
+
+    function logout(){
+      adminArea.style.display = 'none';
+      alert('Sesión cerrada (demo).');
+    }
+
+    // Close modal on outside click
+    modal.addEventListener('click', (e)=> {
+      if(e.target === modal){
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden','true');
+        loginError.style.display='none';
+      }
+    });
+
+    // Smooth scroll for header anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', function(e){
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target){
+          e.preventDefault();
+          target.scrollIntoView({behavior:'smooth'});
+        }
+      });
+    });
+
+    // Accessibility: trap focus in modal? Simple approach: return focus to login button when modal closes
+    modal.addEventListener('transitionend', ()=> {
+      if(!modal.classList.contains('active')) openLoginBtn.focus();
+    });
+
+    // ---------- Contact form (demo client-side) ----------
+    function submitContact(e){
+      e.preventDefault();
+      const name = document.getElementById('c-name').value.trim();
+      const email = document.getElementById('c-email').value.trim();
+      const message = document.getElementById('c-message').value.trim();
+      const result = document.getElementById('contact-result');
+
+      if(!name || !email || !message){
+        result.style.display = 'block';
+        result.textContent = 'Por favor completa todos los campos requeridos.';
+        return;
+      }
+
+      // Simula envío: en producción reemplazar con fetch a backend
+      result.style.display = 'block';
+      result.textContent = 'Gracias, ' + name + '. Tu mensaje ha sido enviado. Te responderemos pronto.';
+      document.getElementById('contact-form').reset();
+    }
+
+  </script>
+</body>
+</html>
